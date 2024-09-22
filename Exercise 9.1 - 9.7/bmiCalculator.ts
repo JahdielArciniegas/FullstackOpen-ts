@@ -17,7 +17,7 @@ const parseArguments = (args:string[]): valueMassAndHeight =>{
   
 }
 
-const calculateBmi = (height : number, mass : number) : string => {
+export const calculateBmi = (height : number, mass : number) : string => {
   const result = (mass/((height/100)^2))
 
   switch(true){
@@ -37,6 +37,8 @@ const calculateBmi = (height : number, mass : number) : string => {
       return "Obese (Class II)"
     case (result>=40):
       return "Obese (Class III)"
+    default:
+      return "Error"
   }
 }
 
