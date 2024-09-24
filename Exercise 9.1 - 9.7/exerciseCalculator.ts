@@ -1,6 +1,5 @@
 const parseArgument = (args:string[]): number[] =>{
   if (args.length < 4)throw new Error('Not enough arguments')
-  // if(args.every(a => Number(a)))throw new Error('Need all number value')
   const relevantArgs = args.slice(2)
   console.log(relevantArgs)
   if(relevantArgs.every(a => !isNaN(Number(a)))) {
@@ -22,7 +21,7 @@ interface resultValue {
   average : number
 }
 
-const calculateExercises = (trainerPerDay : number[]) :resultValue => {
+export const calculateExercises = (trainerPerDay : number[], target : number) :resultValue => {
   const periodLength:number = trainerPerDay.length
   const training = trainerPerDay.filter((t : number) => t !== 0)
   const trainingDays : number = training.length
@@ -41,7 +40,6 @@ const calculateExercises = (trainerPerDay : number[]) :resultValue => {
     ratingDescription = 'good'
   }
   const average : number = totalH/periodLength
-  const target : number = 2
   const success : boolean = target<average
 
   const result = {
@@ -59,7 +57,7 @@ const calculateExercises = (trainerPerDay : number[]) :resultValue => {
 
 try {
   const trainerPerDay = parseArgument(process.argv)
-  console.log(calculateExercises(trainerPerDay))
+  console.log(calculateExercises(trainerPerDay, 2))
 }catch(error : unknown ){
   if(error instanceof Error){
     console.log('Error Something bad happened')

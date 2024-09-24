@@ -1,5 +1,6 @@
 import express from 'express'
 import { calculateBmi } from './bmiCalculator'
+import { calculateExercises } from './exerciseCalculator'
 
 const app = express()
 
@@ -25,6 +26,19 @@ app.get('/bmi', (req, res) => {
     height : Number(req.query.height),
     bmi : result
   })
+})
+
+app.get('/exercises', (req, res) => {
+  if(!req.query.daytrained || !req.query.target) res.json({error : 'Parameters Missing'})
+  if(isNaN(Number(req.query.target))) res.json({error : 'malformatted parameters' })
+  const daytrained = String(req.query.daytrained).split(',')
+  const arrayTrained = daytrained.map(a => Number(a))
+  if(!daytrained.every(a => !isNaN(Number(a)))){
+    return res.json({error : 'malformatted parameters'})
+  } 
+
+  const result = calculateExercises(arrayTrained, Number(req.query.target))
+  return res.json(result)
 })
 
 const PORT = 3003
