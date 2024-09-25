@@ -3,3 +3,16 @@ export interface Diagnoses {
   name : string,
   latin? : string
 }
+
+export type Gender = 'male' | 'female' | 'other';
+
+export interface Patients {
+  id : string,
+  name:  string,
+  dateOfBirth : string,
+  ssn : string,
+  gender : Gender,
+  occupation : string
+}
+
+export type getPatientsNonSsn = Omit<Patients, 'ssn'>;
