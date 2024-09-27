@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import express from 'express';
 import patientsService from '../services/patientsService';
 import { getPatientsNonSsn, newPatients } from '../types';
@@ -10,7 +11,7 @@ patientsRouter.get('/', (_req, res) => {
 });
 
 patientsRouter.post('/', (req, res) => {
-  const {name, dateOfBirth, ssn, gender, occupation} : newPatients = req.body as newPatients;
+  const {name, dateOfBirth, ssn, gender, occupation} : newPatients = req.body;
   const add = patientsService.addPatients({ name, dateOfBirth, ssn ,gender, occupation});
   res.json(add);
 });
