@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
-import diariesService from './service/diaries'
-import { NewDiaryEntry, NonSensitiveDiaryEntry, Visibility, Weather } from "./types"
+import React, { useEffect, useState } from "react"
+import { addDiaries, getDiaries } from './service/diaries'
+import {  NonSensitiveDiaryEntry, Visibility, Weather } from "./types"
+import './App.css'
 
 function App() {
   const [diaries, setDiaries] = useState<NonSensitiveDiaryEntry[]>([])
@@ -8,35 +9,50 @@ function App() {
   const [visibility, setVisibility] = useState<Visibility>()
   const [weather, setWeather] = useState<Weather>()
   const [comment, setComment] = useState<string>('')
+  const [message, setMessage] = useState<string>('')
 
   useEffect(() => {
-    diariesService.getDiaries().then(data => {
+    getDiaries().then(data => {
       setDiaries(data)
     })
   },[])
 
   const onCreate = (event : React.SyntheticEvent) => {
     event.preventDefault()
-    const newDiaries : NewDiaryEntry = {
-      date,visibility ,weather , comment
+    const newDiaries = {
+      date,visibility : visibility as Visibility ,weather : weather as Weather, comment
     }
-    diariesService.addDiaries(newDiaries).then(data => {
-      setDiaries(diaries.concat(data))
+    console.log(newDiaries.date)
+    addDiaries(newDiaries).then(data => setDiaries(diaries.concat(data))
+    ).catch((e : string) => {
+      setMessage(e)
+        setTimeout(() => {
+        setMessage('')
+      }, 5000)
     })
+  }
+
+  const handleVisibility = (value : unknown) => {
+    setVisibility(value as Visibility)
+  }
+
+  const handleWeather = (value : unknown) => {
+    setWeather(value as Weather)
   }
 
   return (
     <>
       <h2>Add new entry</h2>
+      {message !== '' && <p className="err">{message}</p>}
       <form onSubmit={onCreate}>
         <div>
-          <label htmlFor="date">date<input type="text" id="date" value={date} onChange={(e) => setDate(e.target.value)}/></label>
+          <label htmlFor="date">date<input type="date" id="date" value={date} onChange={(e) => setDate(e.target.value)}/></label>
         </div>
         <div>
-          <label htmlFor="visibility">visibility<input type="text" id="visibility" value={visibility} onChange={(e) => setVisibility(e.target.value)}/></label>
+          <label htmlFor="visibility">visibility : great<input type="radio"  name="visibility" onChange={() => handleVisibility('great')}/>good<input type="radio"  name="visibility" onChange={() => handleVisibility('good')}/>ok<input type="radio"  name="visibility" onChange={() => handleVisibility('ok')}/>poor<input type="radio"  name="visibility" onChange={() => handleVisibility('poor')}/></label>
         </div>
         <div>
-          <label htmlFor="weather">weather<input type="text" id="weather" value={weather} onChange={(e) => setWeather(e.target.value)}/></label>
+          <label htmlFor="weather">weather : sunny<input type="radio" name="weather" onChange={() => handleWeather('sunny')}/>rainy<input type="radio" name="weather" onChange={() => handleWeather('rainy')}/>cloudy<input type="radio" name="weather" onChange={() => handleWeather('cloudy')}/>stormy<input type="radio" name="weather" onChange={() => handleWeather('stormy')}/>windy<input type="radio" name="weather" onChange={() => handleWeather('windy')}/></label>
         </div>
         <div>
           <label htmlFor="comment">comment<input type="text" id="comment" value={comment} onChange={(e) => setComment(e.target.value)} /></label>
