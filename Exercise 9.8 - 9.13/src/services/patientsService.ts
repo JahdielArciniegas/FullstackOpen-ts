@@ -13,6 +13,13 @@ const getPatientsNonSsn = () : getPatientsNonSsn[] => {
   }));
 };
 
+const getPatient = (id :string) : Patients=> {
+  if(!patients.find(p => p.id === id)){
+    throw new Error('Parrient not Found');
+  }
+  return patients.find(p => p.id === id) as Patients;
+};
+
 const addPatients = (entry : newPatients) : Patients => {
   const id : string = uuid();
   const newPatientsEntry = {
@@ -24,4 +31,4 @@ const addPatients = (entry : newPatients) : Patients => {
   return newPatientsEntry;
 };
 
-export default {getPatientsNonSsn, addPatients};
+export default {getPatientsNonSsn, addPatients, getPatient};
