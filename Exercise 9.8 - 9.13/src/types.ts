@@ -4,7 +4,6 @@ export interface Diagnoses {
   latin? : string
 }
 
-
 interface SickLeave {
   startDate : string,
   endDate : string
@@ -20,7 +19,7 @@ interface BaseEntry {
   description: string,
   date: string,
   specialist : string,
-  diagnosisCode?: Array<Diagnoses['code']>
+  diagnosisCodes: Array<Diagnoses['code']>
 }
 
 interface OccupationalHealthCare extends BaseEntry {
